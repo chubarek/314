@@ -5,9 +5,123 @@
     <title>Title</title>
 </head>
 <body>
-<p>Hello my Admin! :3</p>
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Logout</button>
-</form>
+    <div class="content">
+        
+        <div class="img">
+           <img src="/images/cat.png" alt="" class="svg">
+        </div>
+        
+        <div class="right">
+
+               <div class="info" th:fragment="user-info(user)">
+                   <div class="title">
+                       <h2>
+                           <span th:text="${user.name}">Имя</span>
+                           <span th:text="${user.lastname}">Фамилия</span>
+                       </h2>
+                           <p><span id="red" style="color: red;">Админ</span></p>
+                   </div>
+
+                   <p>Город: <span th:text="${user.city}">Город</span></p>
+                   <p>Возраст: <span th:text="${user.age}">Возраст</span></p>
+                   <p>Email: <span th:text="${user.email}">Email</span></p>
+               </div>
+
+           <div class="btns">
+                <a href="/admin/allUsers" class="btn">Список пользователей</a>
+                <form th:action="@{/logout}" method="post">
+                    <button class="btn" type="submit">Logout</button>
+                </form>
+           </div>
+
+
+        </div>
+
+   </div>
 </body>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                    'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+                    'Open Sans', 'Helvetica Neue', 'sans-serif';
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .content {
+        padding: 20px;
+        display: inline-flex;
+        gap: 50px;
+        border-radius: 10px;
+        background: #e8e8e8;
+    }
+
+    .img {
+        width: 200px;
+        height: 200px;
+        background: #d5d5d5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+    }
+
+    .right {
+        width: 230px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .info {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .btns, form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    a {
+        text-decoration: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn {
+        width: 100%;
+        height: 30px;
+        font-size: 13px;
+        font-weight: 500;
+        background: rgb(56, 100, 255);
+        outline: none;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        border-radius: 5px;
+    }
+
+    .svg {
+        width: 60%;
+        filter: brightness(0) saturate(100%) invert(40%) sepia(88%)
+        saturate(4441%) hue-rotate(220deg) brightness(100%) contrast(103%);
+    }
+</style>
+
 </html>

@@ -22,7 +22,22 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER/*, cascade = CascadeType.ALL*/)
+    @Column
+    private String name;
+
+    @Column
+    private String lastname;
+
+    @Column
+    private String city;
+
+    @Column
+    private int age;
+
+    @Column
+    private String email;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -30,9 +45,16 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
-    public User(String username, String password, Set<Role> roles) {
+    public User(String username, String password, String name, String lastname,
+                String city,int age, String email, Set<Role> roles)
+    {
         this.username = username;
         this.password = password;
+        this.name = name;
+        this.lastname = lastname;
+        this.city = city;
+        this.age = age;
+        this.email = email;
         this.roles = roles;
     }
 
@@ -97,5 +119,45 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
