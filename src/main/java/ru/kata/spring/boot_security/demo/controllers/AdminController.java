@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,7 +26,7 @@ public class AdminController {
     }
 
     @GetMapping("/allUsers")
-    public String sjowAllUsersPage(Model model) {
+    public String showAllUsersPage(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "admin/allUsers";
     }

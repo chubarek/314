@@ -29,7 +29,6 @@ public class DataInitializer implements ApplicationRunner {
         Role userRole = new Role("ROLE_USER");
         Role adminRole = new Role("ROLE_ADMIN");
 
-        //Сохраняем роли в базу данных
         roleDao.save(userRole);
         roleDao.save(adminRole);
 
@@ -37,7 +36,7 @@ public class DataInitializer implements ApplicationRunner {
             Set<Role> userRoles = new HashSet<>();
             userRoles.add(userRole);
             User user = new User("user", "user",
-                    "Иван", "Иванович","Москва",
+                    "Иван", "Иванович", "Москва",
                     21, "ivan@mail.ru", userRoles);
             userService.saveUser(user);
         }
@@ -47,7 +46,7 @@ public class DataInitializer implements ApplicationRunner {
             adminRoles.add(adminRole);
             adminRoles.add(userRole);
             User admin = new User("admin", "admin",
-                    "Андрей", "Андреевич","Санкт-Петербург",
+                    "Андрей", "Андреевич", "Санкт-Петербург",
                     21, "andrey@mail.ru", adminRoles);
             userService.saveUser(admin);
         }

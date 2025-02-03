@@ -21,8 +21,7 @@ public class WebSecurityConfig {
 
     @Autowired
     public WebSecurityConfig(AuthenticationSuccessHandler successUserHandler,
-                             UserDetailsServiceImpl userDetailsService)
-    {
+                             UserDetailsServiceImpl userDetailsService) {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
     }
