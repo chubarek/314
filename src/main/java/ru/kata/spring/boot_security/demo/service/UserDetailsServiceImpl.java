@@ -20,11 +20,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+
+        User user = null;
+
+        if (login.contains("@")) {
+            user = userDao.findByEmail(login);
+        } else if ( !(login.contains("@")) ) {
+            user = userDao.findByUsername(login);
+        } else {
+            throw new UsernameNotFoundException("User not found with username: " + login);
         }
+
         return user;
     }
 }
