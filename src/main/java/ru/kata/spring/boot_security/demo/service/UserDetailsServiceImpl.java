@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         } else if ( !(login.contains("@")) ) {
             user = userDao.findByUsername(login);
         } else {
-            throw new UsernameNotFoundException("User not found with username: " + login);
+            throw new UsernameNotFoundException("User not found with");
         }
 
         return user;

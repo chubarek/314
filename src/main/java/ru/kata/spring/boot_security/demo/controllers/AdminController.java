@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -27,73 +28,74 @@ public class AdminController {
     }
 
     @GetMapping
-    public String getUserHomePage(@AuthenticationPrincipal User user, Model model) {
+    public String showAdminPage(@AuthenticationPrincipal User user, Model model) {
+        User userToAdd = new User();
+
         User userToShow = userService.findByUsername(user.getUsername());
-        model.addAttribute("user", userToShow);
-        return "admin/adminHome";
-    }
 
-    @GetMapping("/allUsers")
-    public String showAllUsersPage(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "admin/allUsers";
-    }
+        Set<Role> roles = userToShow.getRoles();
+        List<String> userRoles = roles.stream()
+                .map(Role::getRoleName)
+                .map(name -> name.replace("ROLE_", ""))
+                .toList();
 
-    @GetMapping("/add")
-    public String showNewUserForm(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "admin/addUser";
-    }
+        String userToShowRoles = String.join(" ", userRoles);
 
-    @GetMapping("/{id}/edit")
-    public String showEditUserForm(@PathVariable Long id, Model model) {
-        User user = userService.getUserById(id).get();
-
-        model.addAttribute("user", user);
-        return "admin/editUser";
+        model.addAttribute("userToAdd", userToAdd);
+        model.addAttribute("userToShow", userToShow);
+        model.addAttribute("userToShowRoles", userToShowRoles);
+        model.addAttribute("usersList", userService.getAllUsers());
+        return "adminHome";
     }
 
     @GetMapping("/{id}/remove")
     public String deleteUser(@PathVariable(value = "id") long id) {
+        Logger log = LogManager.getLogger(AdminController.class);
+        log.warn("Попытка удаления пользователя с id " + id);
         userService.deleteUser(id);
-        return "redirect:/admin/allUsers";
+        return "redirect:/admin";
     }
 
     @PostMapping("/add")
-    public String saveUser(@ModelAttribute("user") User user,
+    public String saveUser(@ModelAttribute("userToAdd") User user,
                            @RequestParam(name = "role", required = false) String roleInput)
     {
-        Role role = new Role(roleInput);
+        Role role = new Role("ROLE_" + roleInput);
         roleService.saveRole(role);
 
-        if (userService.findByUsername(user.getUsername()) == null) {
+        if (userService.findByEmail(user.getEmail()) == null) {
             Set<Role> userRoles = new HashSet<>();
             userRoles.add(role);
             User userToSave = new User(
-                    user.getUsername(), user.getPassword(),
-                    user.getName(),user.getLastname(), user.getCity(),
-                    user.getAge(), user.getEmail(), userRoles);
+                    user.getEmail(), user.getPassword(),
+                    user.getName(),user.getLastname(), user.getAge(),
+                    user.getEmail(), userRoles);
             userService.saveUser(userToSave);
         }
 
-        return "redirect:/admin/allUsers";
+        return "redirect:/admin";
     }
 
     @PostMapping("/{id}/edit")
-    public String updateSelectedUser(@ModelAttribute("user") User user,
+    public String updateSelectedUser(@ModelAttribute("userToAdd") User user,
                                      @RequestParam(name = "role", required = false)
                                      String roleInput)
     {
         Logger log = LogManager.getLogger(AdminController.class);
-        log.info("Попытка обновления роли пользователя на " + roleInput);
+        log.warn("Попытка обновления пользователя, новая роль {} " + roleInput);
 
-        Role role = new Role(roleInput);
+        if (user.getUsername() == null) {
+            user.setUsername(userService.findByEmail(user.getEmail()).getEmail());
+        }
+
+        Role role = new Role("ROLE_" + roleInput);
         roleService.saveRole(role);
+
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(role);
         user.setRoles(userRoles);
+
         userService.updateUser(user);
-        return "redirect:/admin/allUsers";
+        return "redirect:/admin";
     }
 }

@@ -15,7 +15,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column
     private String username;
 
     @Column(nullable = false)
@@ -26,9 +26,6 @@ public class User implements UserDetails {
 
     @Column
     private String lastname;
-
-    @Column
-    private String city;
 
     @Column
     private int age;
@@ -45,13 +42,12 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     public User(String username, String password, String name, String lastname,
-                String city,int age, String email, Set<Role> roles)
+                int age, String email, Set<Role> roles)
     {
         this.username = username;
         this.password = password;
         this.name = name;
         this.lastname = lastname;
-        this.city = city;
         this.age = age;
         this.email = email;
         this.roles = roles;
@@ -89,14 +85,6 @@ public class User implements UserDetails {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     public int getAge() {

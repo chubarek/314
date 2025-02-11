@@ -36,8 +36,8 @@ public class DataInitializer implements ApplicationRunner {
             Set<Role> userRoles = new HashSet<>();
             userRoles.add(userRole);
             User user = new User("user", "user",
-                    "Иван", "Иванович", "Москва",
-                    21, "ivan@mail.ru", userRoles);
+                    "Иван", "Иванович", 21,
+                    "ivan@mail.ru", userRoles);
             userService.saveUser(user);
         }
 
@@ -46,8 +46,17 @@ public class DataInitializer implements ApplicationRunner {
             adminRoles.add(adminRole);
             adminRoles.add(userRole);
             User admin = new User("admin", "admin",
-                    "Андрей", "Андреевич", "Санкт-Петербург",
-                    21, "andrey@mail.ru", adminRoles);
+                    "Андрей", "Андреевич", 21,
+                    "andrey@mail.ru", adminRoles);
+            userService.saveUser(admin);
+        }
+
+        if (userService.findByUsername("a") == null) {
+            Set<Role> userRoles = new HashSet<>();
+            userRoles.add(userRole);
+            User admin = new User("a", "a",
+                    "a", "a", 30,
+                    "a@mail.ru", userRoles);
             userService.saveUser(admin);
         }
     }

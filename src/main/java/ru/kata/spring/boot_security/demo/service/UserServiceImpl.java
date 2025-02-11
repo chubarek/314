@@ -43,6 +43,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    @Transactional
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
