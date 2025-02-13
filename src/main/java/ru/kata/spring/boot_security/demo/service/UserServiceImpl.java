@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -60,14 +61,47 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public void saveUser(User user, String[] roles) {
+
+        if (user.getUsername() == null) {
+            user.setUsername(user.getEmail());
+        }
+
+        if (userRepository.findByEmail(user.getEmail()) == null) {
+            Set<Role> rolestoSet = new HashSet<>();
+
+            for (String role : roles) {
+                Role newRole = new Role("ROLE_" +role);
+                roleService.saveRole(newRole);
+                rolestoSet.add(newRole);
+            }
+
+            user.setRoles(rolestoSet);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+            userRepository.save(user);
+        }
+    }
+
+    @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user, String[] roles) {
+        Set<Role> rolestoSet = new HashSet<>();
+
+        for (String role : roles) {
+            Role newRole = new Role("ROLE_" +role);
+            roleService.saveRole(newRole);
+            rolestoSet.add(newRole);
+        }
+
+        user.setRoles(rolestoSet);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-
     }
 }
+

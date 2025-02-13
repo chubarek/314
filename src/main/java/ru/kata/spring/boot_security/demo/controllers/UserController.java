@@ -27,15 +27,7 @@ public class UserController {
 
     @GetMapping
     public String getUserHomePage(@AuthenticationPrincipal User user, Model model) {
-        User userToShow = userService.findByUsername(user.getUsername());
-        model.addAttribute("user", userToShow);
-
-        Set<Role> roles = userToShow.getRoles();
-        String userRole = roles.stream()
-                        .map(Role::getRoleName)
-                        .map(name -> name.replace("ROLE_", ""))
-                        .collect(Collectors.joining(" "));
-        model.addAttribute("usersRole", userRole);
+        model.addAttribute("user", user);
         return "userHome";
     }
 }
