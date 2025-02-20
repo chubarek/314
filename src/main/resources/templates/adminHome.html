@@ -55,7 +55,7 @@
                             </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeEdit">Close</button>
                         <button type="submit" class="btn btn-primary">Edit</button>
                     </div>
                 </form>
@@ -127,10 +127,10 @@
 
             <ul class="nav nav-tabs">
                 <li class="nav-item" id="showUsersList" style="cursor: pointer;">
-                  <p class="nav-link text-primary m-0 active">Users table</p>
+                  <p class="nav-link text-primary m-0 active" id="showUsersListBtn">Users table</p>
                 </li>
                 <li class="nav-item" id="showAddUserForm" style="cursor: pointer;">
-                  <p class="nav-link m-0">New User</p>
+                  <p class="nav-link m-0" id="showAddUserFormBtn">New User</p>
                 </li>
               </ul>
             <div class="border" id="usersList">
@@ -185,7 +185,7 @@
                             </div>
                         </div>
                     
-                        <button class="btn btn-success" type="submit">Add new user</button>
+                        <button class="btn btn-success" type="submit" id="addUserBtn">Add new user</button>
                     </form>
             </div>
         </div>
@@ -226,9 +226,9 @@
     <script src="/api.js"></script>
     <script src="/showModal.js"></script>
 
-    <!-- <script src="/static/api.js"></script>
+    <script src="/static/api.js"></script>
     <script src="/static/changeSelections.js"></script>
-    <script src="/static/showModal.js"></script> -->
+    <script src="/static/showModal.js"></script>
 </body>
 
 <style>
@@ -267,10 +267,8 @@
     }
 
     #successAlert {
-
         margin: 0;
-        padding: 0.75rem 0 0 0;
-
+        padding: 15px 0 0 0;
         width: 35%;
         display: flex;
         flex-direction: column;
@@ -292,18 +290,25 @@
 
     .timer-line {
         height: 1px;
-        width: 100%; /* Ширина линии изначально равна ширине родительского контейнера */
+        width: 100%;
         background-color: #4CAF50;
         margin-top: 15px;
-        transition: width 5s linear; /* Линейная анимация ширины */
+        transition: width 5s linear;
     }
 
     #successAlert.active {
         bottom: 20px;
     }
 
+    #successAlert.hidden {
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+
     #successAlert.hidden .timer-line {
-        width: 0; /* Состояние, когда линия полностью уменьшается */
+        width: 100%;
     }
     
 </style>

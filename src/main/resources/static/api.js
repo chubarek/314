@@ -21,24 +21,30 @@ window.onload = function(){
 }
 
 function showSuccess(msg) {
+    timerLine.style.width = '0%';
+    
+    alerPlate.classList.remove('hidden')
     alerPlate.classList.add('active');
     alertMsg.innerHTML = msg;
+    
     setTimeout(() => {
-    }, 201);
+        timerLine.style.width = '100%';
+    }, 200);
 }
 
 function hideSuccess() {
-    timerLine.style.width = '0';
+    timerLine.style.width = '0%';
+    
     setTimeout(() => {
         alerPlate.classList.remove('active');
         alerPlate.classList.add('hidden');
-    }, 5001);
+    }, 5000);
 }
 
 function anim(text) {
     showSuccess(text);
     setTimeout(hideSuccess, 1000);
-};
+}
 
 function refreshData() {
     getUsersList();
@@ -168,6 +174,22 @@ document.getElementById('addNewUser').addEventListener('submit', (event) => {
                 anim('Пользователь успешно добавлен!');
                 refreshData();
 
+                let usersListBtn = document.getElementById('showUsersListBtn')
+                let addFormBtn = document.getElementById('showAddUserFormBtn')
+                const usersList = document.getElementById('usersList');
+                const addUserForm = document.getElementById('addUserForm');
+
+                usersListBtn.classList.add('active')
+                usersListBtn.classList.remove('text-black')
+                usersListBtn.classList.add('text-primary')
+
+                addFormBtn.classList.remove('active')
+                addFormBtn.classList.add('text-black')
+                addFormBtn.classList.remove('text-primary')
+
+                usersList.style.display = 'block';
+                addUserForm.style.display = 'none';
+
                 // Очищаем форму для нового ввода данных
                 document.getElementById('nameToAdd').value = '';
                 document.getElementById('lastnameToAdd').value = '';
@@ -176,7 +198,7 @@ document.getElementById('addNewUser').addEventListener('submit', (event) => {
                 document.getElementById('passwordToAdd').value = '';
                 document.querySelectorAll('input[name="roleToAdd"]').forEach(role => role.checked = false);
             } else {
-                alert('Error adding user.');
+                anim('Ошибка добавления пользователя')
             }
         })
         .catch(error => {
@@ -216,16 +238,10 @@ document.getElementById('editUserForm').addEventListener('submit', (event) => {
                 getUsersList();
                 getAuthorizedUser();
 
-                // Очищаем форму для нового ввода данных
-                document.getElementById('editUserId').value = '';
-                document.getElementById('editName').value = '';
-                document.getElementById('editLastname').value = '';
-                document.getElementById('editAge').value = '';
-                document.getElementById('editEmail').value = '';
-                document.getElementById('editPassword').value = '';
-                document.querySelectorAll('input[name="roleToEdit"]').forEach(role => role.checked = false);
+                document.getElementById('closeEdit').click()
+
             } else {
-                alert('Error adding user.');
+                anim('Ошибка удаления пользователя!');
             }
         })
         .catch(error => {
@@ -256,7 +272,7 @@ document.getElementById('deleteUserForm').addEventListener('submit', (event) => 
 
                 document.getElementById('closeDelete').click()
             } else {
-                alert('Ошибка удаления пользователя');
+                anim('Ошибка удаления пользователя!');
             }
         })
         .catch(error => {
