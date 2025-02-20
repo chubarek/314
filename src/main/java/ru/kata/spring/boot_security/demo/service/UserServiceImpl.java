@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.models.UserDTO;
 
 import java.util.HashSet;
 import java.util.List;
@@ -19,37 +20,37 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RoleService roleService;
+    private final Convertor convertor;
 
     @Autowired
     public UserServiceImpl(UserDao userRepository, PasswordEncoder passwordEncoder,
-                           RoleService roleService)
+                           Convertor convertor)
     {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.roleService = roleService;
+        this.convertor = convertor;
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
@@ -62,46 +63,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void saveUser(User user, String[] roles) {
-
-        if (user.getUsername() == null) {
-            user.setUsername(user.getEmail());
-        }
-
-        if (userRepository.findByEmail(user.getEmail()) == null) {
-            Set<Role> rolestoSet = new HashSet<>();
-
-            for (String role : roles) {
-                Role newRole = new Role("ROLE_" +role);
-                roleService.saveRole(newRole);
-                rolestoSet.add(newRole);
-            }
-
-            user.setRoles(rolestoSet);
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-            userRepository.save(user);
+    public void saveUser(UserDTO userDTO) {
+        if (userRepository.findByEmail(userDTO.getEmail()) == null) {
+            userRepository.save(new User(
+                    userDTO.getEmail(), passwordEncoder.encode(userDTO.getPassword()),
+                    userDTO.getName(), userDTO.getLastname(),
+                    userDTO.getAge(), userDTO.getEmail(),
+                    convertor.stringToSet(userDTO.getRoles())
+            ));
         }
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public void updateUser(User user, String[] roles) {
-        Set<Role> rolestoSet = new HashSet<>();
+    @Transactional
+    public void updateUser(UserDTO userDTO) {
+        User userToUpdate = userRepository.findByEmail(userDTO.getEmail());
 
-        for (String role : roles) {
-            Role newRole = new Role("ROLE_" +role);
-            roleService.saveRole(newRole);
-            rolestoSet.add(newRole);
-        }
+        userToUpdate.setId(userDTO.getId());
+        userToUpdate.setName(userDTO.getName());
+        userToUpdate.setLastname(userDTO.getLastname());
+        userToUpdate.setAge(userDTO.getAge());
+        userToUpdate.setEmail(userDTO.getEmail());
+        userToUpdate.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userToUpdate.setRoles(convertor.stringToSet(userDTO.getRoles()));
 
-        user.setRoles(rolestoSet);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        userRepository.save(userToUpdate);
     }
 }
 

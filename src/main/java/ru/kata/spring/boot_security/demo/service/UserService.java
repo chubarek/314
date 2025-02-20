@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.data.repository.query.Param;
 import ru.kata.spring.boot_security.demo.models.User;
+import ru.kata.spring.boot_security.demo.models.UserDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +17,9 @@ public interface UserService {
 
     void saveUser(User user);
 
-    void saveUser(User user, String[] roles);
+    void saveUser(UserDTO user);
 
     void deleteUser(Long id);
 
-    void updateUser(User user, String[] roles);
+    void updateUser(UserDTO user);
 }

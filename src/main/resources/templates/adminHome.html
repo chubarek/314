@@ -8,47 +8,52 @@
 </head>
 <body>
 
-    
+    <div class="alert alert-success" id="successAlert" role="alert">
+        <p id="alertMsg"></p>
+        <span class="timer-line"></span>
+    </div>
+
     <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit user</h5>
+                    <h5 class="modal-title" id="editUserModalLabel">Edit user</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form th:method="POST" th:action="@{/admin/{id}/edit(id=${id})}" th:object="${userToAdd}" id="editForm">
+                <form id="editUserForm">
                     <div class="modal-body col-12 d-flex align-items-center flex-column">
-                        <input type="hidden" name="id" value="" id="editUserId">
-                        <p class="m-0">First name</p>
-                        <input class="col-6 border rounded py-1 mb-3" th:field="*{name}" type="text" id="editName" placeholder="First name">
+                            <p class="m-0 text-center">ID</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="text" id="editUserId" readonly>
         
-                        <p class="m-0">Last name</p>
-                        <input class="col-6 border rounded py-1 mb-3" th:field="*{lastname}" type="text" id="editLastname" placeholder="Last name">
+                            <p class="m-0 text-center">First name</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="text" id="editName" value="">
         
-                        <p class="m-0">Age</p>
-                        <input class="col-6 border rounded py-1 mb-3" th:field="*{age}" type="text" id="editAge" placeholder="Age">
+                            <p class="m-0 text-center">Last name</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="text" id="editLastname">
         
-                        <p class="m-0">Email</p>
-                        <input class="col-6 border rounded py-1 mb-3" th:field="*{email}" type="email" id="editEmail" placeholder="Email">
-
-                        <p class="m-0">Password</p>
-                        <input class="col-6 border rounded py-1 mb-3" th:field="*{password}" type="password" id="password" placeholder="Password">
+                            <p class="m-0 text-center">Age</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="text" id="editAge">
         
-                        <p class="m-0">Role</p>
-                        <div class="col-4 mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="role" id="userCheckRole" value="USER">
-                                <label class="form-check-label" for="userCheckRole">USER</label>
+                            <p class="m-0 text-center">Email</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="email" id="editEmail">
+        
+                            <p class="m-0 text-center">Password</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="password" id="editPassword">
+        
+                            <p class="m-0">Role</p>
+                            <div class="col-7 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="roleToEdit" id="userCheckRole" value="USER">
+                                    <label class="form-check-label">USER</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="roleToEdit" id="adminCheckRole" value="ADMIN">
+                                    <label class="form-check-label">ADMIN</label>
+                                </div>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="role" id="adminCheckRole" value="ADMIN">
-                                <label class="form-check-label" for="adminCheckRole">ADMIN</label>
-                            </div>
-                        </div>
                     </div>
-                
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Edit</button>
@@ -67,31 +72,31 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body col-12 d-flex align-items-center flex-column">
-                    <p class="m-0">ID</p>
-                    <input class="col-6 border rounded py-1 mb-3" type="text" id="deleteUserId" readonly>
-                    <p class="m-0">First name</p>
-                    <input class="col-6 border rounded py-1 mb-3" type="text" id="deleteName" readonly>
+                <form id="deleteUserForm">
+                    <div class="modal-body col-12 d-flex align-items-center flex-column">
+                            <p class="m-0 text-center">ID</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="text" id="deleteUserId" readonly>
         
-                    <p class="m-0">Last name</p>
-                    <input class="col-6 border rounded py-1 mb-3" type="text" id="deleteLastname" readonly>
+                            <p class="m-0 text-center">First name</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="text" id="deleteName" value="">
         
-                    <p class="m-0">Age</p>
-                    <input class="col-6 border rounded py-1 mb-3" type="text" id="deleteAge" readonly>
+                            <p class="m-0 text-center">Last name</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="text" id="deleteLastname">
         
-                    <p class="m-0">Email</p>
-                    <input class="col-6 border rounded py-1 mb-3" type="email" id="deleteEmail" readonly>
+                            <p class="m-0 text-center">Age</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="text" id="deleteAge">
         
-                    <p class="m-0">Roles</p>
-                    <input class="col-6 border rounded py-1 mb-3" type="email" id="deleteRoles" readonly>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger">
-                        <a th:href="@{/admin/{id}/remove(id=${id})}" id="deleteBtn">Delete</a>
-                    </button>
-                </div>
+                            <p class="m-0 text-center">Email</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="email" id="deleteEmail">
+        
+                            <p class="m-0">Role</p>
+                            <input class="col-7 border rounded py-1 mb-3" type="password" id="deleteRoles">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="closeDelete" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -99,13 +104,9 @@
 
     <div class="container-fluid bg-dark px-4 py-2 d-flex justify-content-between align-items-center" id="header">
         <p class="text-white m-0">
-            <span th:text="${userToShow.email}">email@mail.ru</span>
+            <span id="userDataEmail">email@mail.ru</span>
             with roles:
-            <span th:text="${#strings.listJoin(userToShow.roles, ' ')}">
-                <span th:each="role : ${userToShow.roles}">
-                    <span th:text="${role.role}">Roles</span> &nbsp;
-                </span>
-            </span>
+            <span id="userDataRoles">ADMIN</span>
         </p>
         
         <form th:action="@{/logout}" method="post">
@@ -137,75 +138,53 @@
 
                 <div class="container-fluid px-4 pb-4" id="usersTable">
                     <table class="col-12">
-                        <tr class="border-top">
-                            <td class="py-2 pl-2">ID</td>
-                            <td>First Name</td>
-                            <td>Last Name</td>
-                            <td>Age</td>
-                            <td>Email</td>
-                            <td>Role</td>
-                            <td>Edit</td>
-                            <td>Delete</td>
-                        </tr>
-                        <tr th:block th:each="user : ${usersList}" class="border-top alert-secondary">
-                            <td class="py-2 pl-2"th:text="${user.id}">3</td>
-                            <td th:text="${user.name}">name</td>
-                            <td th:text="${user.lastname}">lastname</td>
-                            <td th:text="${user.age}">age</td>
-                            <td th:text="${user.email}">email</td>
-                            <td th:text="${#strings.listJoin(user.roles, ' ')}" class="py-2">
-                                <span th:each="role : ${user.roles}">
-                                    <span th:text="${role.role}">Roles</span> &nbsp;
-                                </span>
-                            </td>
-
-                            <td class="py-2">
-                                <button class="btn btn-info open-edit-modal" data-toggle="modal" data-target="#editUserModal"
-                                        th:attr="data-id=${user.id}, data-name=${user.name}, data-lastname=${user.lastname},
-                                        data-age=${user.age}, data-email=${user.email}, data-roles=${#strings.listJoin(user.roles, ',')}">Edit</button>
-                            </td>
-
-                            <td class="py-2">
-                                <button class="btn btn-danger open-delete-modal" data-toggle="modal" data-target="#deleteUserModal"
-                                        th:attr="data-id=${user.id}, data-name=${user.name}, data-lastname=${user.lastname},
-                                        data-age=${user.age}, data-email=${user.email}, data-roles=${#strings.listJoin(user.roles, ' ')}">Delete</button>
-                            </td>
-                        </tr>
+                        <thead class="users-table-head">
+                            <tr>
+                                <td class="py-3 pl-2">ID</td>
+                                <td class="py-3">First Name</td>
+                                <td class="py-3">Last Name</td>
+                                <td class="py-3">Age</td>
+                                <td class="py-3">Email</td>
+                                <td class="py-3">Role</td>
+                                <td class="py-3">Edit</td>
+                                <td class="py-3">Delete</td>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body"></tbody>
                     </table>
                 </div>
             </div>
 
             <div class="border" id="addUserForm" style="display: none;">
                     <p class="alert-secondary py-2 pl-3 m-0 border-bottom">Add user</p>
-                    <form th:method="POST" th:action="@{/admin/add}" th:object="${userToAdd}" class="bg-white d-flex flex-column align-items-center py-3">
-
+                    <form id="addNewUser" class="bg-white d-flex flex-column align-items-center py-3">
                         <p class="m-0">First name</p>
-                        <input class="col-4 border rounded py-1 mb-3" th:field="*{name}" type="text" id="name" placeholder="First name">
-
+                        <input class="col-4 border rounded py-1 mb-3" type="text" id="nameToAdd" placeholder="First name" required>
+                    
                         <p class="m-0">Last name</p>
-                        <input class="col-4 border rounded py-1 mb-3" th:field="*{lastname}" type="text" id="lastname" placeholder="Last name">
-
+                        <input class="col-4 border rounded py-1 mb-3" type="text" id="lastnameToAdd" placeholder="Last name" required>
+                    
                         <p class="m-0">Age</p>
-                        <input class="col-4 border rounded py-1 mb-3" th:field="*{age}" type="text" id="age" placeholder="Age">
-
+                        <input class="col-4 border rounded py-1 mb-3" type="number" id="ageToAdd" placeholder="Age" required>
+                    
                         <p class="m-0">Email</p>
-                        <input class="col-4 border rounded py-1 mb-3" th:field="*{email}" type="email" id="email" placeholder="Email">
-
+                        <input class="col-4 border rounded py-1 mb-3" type="email" id="emailToAdd" placeholder="Email" required>
+                    
                         <p class="m-0">Password</p>
-                        <input class="col-4 border rounded py-1 mb-3" th:field="*{password}" type="password" id="password" placeholder="Password">
-
+                        <input class="col-4 border rounded py-1 mb-3" type="password" id="passwordToAdd" placeholder="Password" required>
+                    
                         <p class="m-0">Role</p>
                         <div class="col-4 mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="role" id="userCheckRole" value="USER">
+                                <input class="form-check-input" type="checkbox" name="roleToAdd" id="userCheckRole" value="USER">
                                 <label class="form-check-label" for="userCheckRole">USER</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="role" id="adminCheckRole" value="ADMIN">
+                                <input class="form-check-input" type="checkbox" name="roleToAdd" id="adminCheckRole" value="ADMIN">
                                 <label class="form-check-label" for="adminCheckRole">ADMIN</label>
                             </div>
                         </div>
-
+                    
                         <button class="btn btn-success" type="submit">Add new user</button>
                     </form>
             </div>
@@ -218,26 +197,19 @@
                 <p class="alert-secondary py-2 pl-3 border-bottom">About user</p>
                 <div class="container-fluid px-4 pb-4">
                     <table class="col-12">
-                        <tr class="border-top">
-                            <td class="py-2 pl-2">ID</td>
-                            <td>First Name</td>
-                            <td>Last Name</td>
-                            <td>Age</td>
-                            <td>Email</td>
-                            <td>Role</td>
-                        </tr>
-                        <tr th:block th:fragment="user-info(userToShow)" class="border-top alert-secondary">
-                            <td th:text="${userToShow.id}" class="py-2 pl-2"></td>
-                            <td th:text="${userToShow.name}"></td>
-                            <td th:text="${userToShow.lastname}"></td>
-                            <td th:text="${userToShow.age}"></td>
-                            <td th:text="${userToShow.email}"></td>
-                            <td th:text="${#strings.listJoin(userToShow.roles, ' ')}" class="py-2">
-                                <span th:each="role : ${userToShow.roles}">
-                                    <span th:text="${role.role}">Roles</span> &nbsp;
-                                </span>
-                            </td>
-                        </tr>
+                        <thead>
+                            <tr class="border-top bg-white">
+                                <td class="py-2 pl-2">ID</td>
+                                <td>First Name</td>
+                                <td>Last Name</td>
+                                <td>Age</td>
+                                <td>Email</td>
+                                <td>Role</td>
+                            </tr>
+                        </thead>
+                        <tbody id="authorizedUserData">
+                            <!-- Динамически выводимая информация об авторизованном пользователе -->
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -248,149 +220,16 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/3.6.20/fetch.js" integrity="sha512-HcIFTco6s7ipvn1hPSsztqwgA0u1BlgMmFCUS1qCEyT76pSP1F5//mawE+95ZRQ3U1LxtyIMyT6+tyJg36UOew==" type="module" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="/changeSelections.js"></script>
+    <script src="/api.js"></script>
+    <script src="/showModal.js"></script>
+
+    <!-- <script src="/static/api.js"></script>
+    <script src="/static/changeSelections.js"></script>
+    <script src="/static/showModal.js"></script> -->
 </body>
-
-<script>
-    const BTNS = document.querySelectorAll('.btn-custom');
-    const adminPanel = document.getElementById('adminPanel');
-    const userInfo = document.getElementById('userInfo');
-
-    const navLinks = document.querySelectorAll('.nav-link');
-    const usersList = document.getElementById('usersList');
-    const addUserForm = document.getElementById('addUserForm');
-    console.log(usersList);
-    console.log(addUserForm);
-
-    function removeStyles() {
-        BTNS.forEach(el => {
-            el.classList.remove('bg-primary');
-            el.classList.remove('text-white');
-
-            el.classList.add('bg-white');
-            el.classList.add('text-primary');
-        })
-    }
-
-    function removeActive() {
-        navLinks.forEach(el => {
-            el.classList.remove('active')
-            el.classList.remove('text-primary');
-            el.classList.add('text-black');
-
-        })
-    }
-
-    BTNS.forEach(el => {
-        el.addEventListener('click', () => {
-            removeStyles();
-
-            el.classList.remove('bg-white');
-            el.classList.remove('text-primary');
-
-            el.classList.add('bg-primary');
-            el.classList.add('text-white');
-
-            if (el.innerHTML == 'Admin') {
-                adminPanel.style.display = 'block';
-                userInfo.style.display = 'none';
-            }
-
-            if (el.innerHTML == 'User') {
-                adminPanel.style.display = 'none';
-                userInfo.style.display = 'block';
-            }
-        })
-    })
-
-    navLinks.forEach(el => {
-        el.addEventListener('click', ()=> {
-            removeActive();
-            el.classList.add('active');
-            el.classList.remove('text-black');
-            el.classList.add('text-primary');
-
-            if (el.innerHTML == 'Users table') {
-                console.log('Users table')
-                usersList.style.display = 'block';
-                addUserForm.style.display = 'none';
-            }
-
-            if (el.innerHTML == 'New User') {
-                console.log('New User')
-                usersList.style.display = 'none';
-                addUserForm.style.display = 'block';
-            }
-        })
-    })
-</script>
-
-<script>
-$(document).ready(function () {
-    $('.open-edit-modal').on('click', function () {
-        var userId = $(this).data('id'); // Получаем id пользователя
-        console.log(userId);
-        
-        // Передаем id в скрытое поле формы
-        $('#id').val(userId); 
-        var editAction = `/admin/${userId}/edit`;
-        console.log(editAction)
-        $('#editForm').attr('action', editAction);
-        $('#editUserId').val(userId)
-        
-        // Остальные поля   
-        var name = $(this).data('name');
-        var lastname = $(this).data('lastname');
-        var age = $(this).data('age');
-        var email = $(this).data('email');
-        var roles = $(this).data('roles').split(',');
-
-        $('#editName').val(name);
-        $('#editLastname').val(lastname);
-        $('#editAge').val(age);
-        $('#editEmail').val(email);
-
-        // Показ модального окна
-        $('#editUserModal').modal('show');
-    });
-
-    $('.open-delete-modal').on('click', function () {
-        var userId = $(this).data('id'); // Получаем id пользователя
-        
-        // Передаем id в скрытое поле формы
-        $('#id').val(userId); 
-        var deleteHref = `/admin/${userId}/remove`;
-        $('#deleteBtn').attr('href', deleteHref)
-
-        
-        // Остальные поля
-        var name = $(this).data('name');
-        var lastname = $(this).data('lastname');
-        var age = $(this).data('age');
-        var email = $(this).data('email');
-        var roles = $(this).data('roles');
-        console.log(roles);
-
-        
-        // Устанавливаем значения для полей
-        $('#deleteUserId')
-            .attr('placeholder', userId)
-        $('#deleteName')
-            .attr('placeholder', name);  // Заменяем placeholder значением name
-        $('#deleteLastname')
-            .attr('placeholder', lastname);  // Заменяем placeholder значением lastname
-        $('#deleteAge')
-            .attr('placeholder', age);  // Заменяем placeholder значением age
-        $('#deleteEmail')
-            .attr('placeholder', email);  // Заменяем placeholder значением email
-        $('#deleteRoles')
-            .attr('placeholder', roles);
-
-        // Показ модального окна
-        $('#deleteUserModal').modal('show');
-    });
-
-});
-</script>
 
 <style>
     body {
@@ -411,7 +250,7 @@ $(document).ready(function () {
         height: 100%;
     }
     
-    #usersTable tr:nth-child(odd) {
+    #usersTable tr:nth-child(even) {
         background: #fff;
     }
 
@@ -425,6 +264,46 @@ $(document).ready(function () {
     a:hover{
         color: #fff;
         text-decoration: none;
+    }
+
+    #successAlert {
+
+        margin: 0;
+        padding: 0.75rem 0 0 0;
+
+        width: 35%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        position: fixed;
+        bottom: -80px;
+        left: calc(50% - 17.5%);
+        z-index: 100;
+        transition: bottom 0.2s ease-in-out;
+    }
+
+    #successAlert p {
+        width: 100%;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .timer-line {
+        height: 1px;
+        width: 100%; /* Ширина линии изначально равна ширине родительского контейнера */
+        background-color: #4CAF50;
+        margin-top: 15px;
+        transition: width 5s linear; /* Линейная анимация ширины */
+    }
+
+    #successAlert.active {
+        bottom: 20px;
+    }
+
+    #successAlert.hidden .timer-line {
+        width: 0; /* Состояние, когда линия полностью уменьшается */
     }
     
 </style>
